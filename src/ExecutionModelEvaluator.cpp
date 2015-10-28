@@ -21,6 +21,7 @@
 #include <boost/property_tree/ptree.hpp>
 #include <exprtk.hpp>
 #include <LogHard/Logger.h>
+#include <sharemind/compiler-support/GccPR44436.h>
 #include <sstream>
 
 #include "ExecutionModelEvaluator.h"
