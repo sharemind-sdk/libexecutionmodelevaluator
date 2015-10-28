@@ -82,8 +82,9 @@ private: /* Fields: */
 
 namespace sharemind {
 
-ExecutionModelEvaluator::ExecutionModelEvaluator(const LogHard::Logger & logger,
-                                         const std::string & configFilename)
+ExecutionModelEvaluator::ExecutionModelEvaluator(
+        const LogHard::Logger & logger,
+        const std::string & configFilename)
 {
     using boost::property_tree::ptree;
     ptree config;

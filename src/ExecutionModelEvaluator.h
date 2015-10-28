@@ -69,7 +69,7 @@ private: /* Types: */
 public: /* Methods: */
 
     ExecutionModelEvaluator(const LogHard::Logger & logger,
-                        const std::string & configFilename);
+                            const std::string & configFilename);
 
     inline Model * model(const std::string & modelType,
                          const std::string & modelName) const
