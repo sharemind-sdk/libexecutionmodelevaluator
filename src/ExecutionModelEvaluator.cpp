@@ -54,7 +54,7 @@ public: /* Methods: */
     inline double evaluate(size_t inputSize) const final override {
         static_assert(std::numeric_limits<double>::radix == 2, "Expected double type radix to be 2.");
         static_assert(std::numeric_limits<double>::digits >= 0, "");
-        constexpr const size_t max =
+        constexpr std::size_t max =
             sizeof(size_t) >= (std::numeric_limits<double>::digits % 8u == 0
                               ? std::numeric_limits<double>::digits / 8u
                               : std::numeric_limits<double>::digits / 8u + 1u)
