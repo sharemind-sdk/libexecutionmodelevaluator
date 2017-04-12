@@ -23,7 +23,7 @@
 #include <boost/property_tree/ptree.hpp>
 #include <exprtk.hpp>
 #include <LogHard/Logger.h>
-#include <sharemind/compiler-support/GccPR44436.h>
+#include <sharemind/MakeUnique.h>
 #include <sstream>
 
 
@@ -134,31 +134,24 @@ ExecutionModelEvaluator::ExecutionModelEvaluator(
                 }
 
                 // Parse all the model expressions for this section
-                std::unique_ptr<ModelMap> models(new ModelMap());
+                auto models(makeUnique<ModelMap>());
 
                 for (const ptree::value_type & model : modelSection.second) {
                     const std::string & modelName(model.first);
                     const std::string modelExpression = model.second.get_value<std::string>();
 
                     try {
-                        std::unique_ptr<ExprTkModel> model(
-                                new ExprTkModel(parser, modelExpression,
-                                                inputSizeVarName, constants));
-
-                        #if ! SHAREMIND_GCCPR44436
-                        if (!models->emplace(modelName, model.get()).second)
-                        #else
-                        if (!models->insert(
-                                    ModelMap::value_type(modelName,
-                                                         model.get())).second)
-                        #endif
+                        auto model(makeUnique<ExprTkModel>(parser,
+                                                           modelExpression,
+                                                           inputSizeVarName,
+                                                           constants));
+                        if (!models->emplace(modelName,
+                                             std::move(model)).second)
                         {
                             logger.error() << "Duplicate model expression" <<
                                 " definitions for '" << modelName << "'.";
                             throw ConfigurationException();
                         }
-
-                        model.release();
                     } catch (const Model::ExpressionCompileException &) {
                         logger.error() << "Invalid model expression '" << modelName
                             << "' = '" << modelExpression << "': " << parser.error();
@@ -166,20 +159,13 @@ ExecutionModelEvaluator::ExecutionModelEvaluator(
                     }
                 }
 
-                #if ! SHAREMIND_GCCPR44436
-                if (!m_modelTypes.emplace(modelSectionName, models.get()).second)
-                #else
-                if (!m_modelTypes.insert(
-                            ModelTypeMap::value_type(modelSectionName,
-                                                     models.get())).second)
-                #endif
+                if (!m_modelTypes.emplace(modelSectionName,
+                                          std::move(models)).second)
                 {
                     logger.error() << "Duplicate model type sections" <<
                         " for '" << modelSectionName << "'.";
                     throw ConfigurationException();
                 }
-
-                models.release();
             }
         }
     } catch (const boost::property_tree::ini_parser_error & e) {

@@ -21,8 +21,9 @@
 #define MOD_SHARED3P_EMU_EXECUTIONMODELEVALUATOR_H
 
 #include <limits>
+#include <map>
+#include <memory>
 #include <sharemind/Exception.h>
-#include <sharemind/ScopedObjectMap.h>
 
 
 namespace LogHard { class Logger; }
@@ -63,8 +64,8 @@ public: /* Types: */
 
 private: /* Types: */
 
-    using ModelMap = ScopedObjectMap<std::string, Model>;
-    using ModelTypeMap = ScopedObjectMap<std::string, ModelMap>;
+    using ModelMap = std::map<std::string, std::unique_ptr<Model> >;
+    using ModelTypeMap = std::map<std::string, std::unique_ptr<ModelMap> >;
 
 public: /* Methods: */
 
@@ -74,8 +75,12 @@ public: /* Methods: */
     inline Model * model(const std::string & modelType,
                          const std::string & modelName) const
     {
-        const ModelMap * const models = m_modelTypes.maybeAt(modelType);
-        return models ? models->maybeAt(modelName) : nullptr;
+        auto const modelsIt(m_modelTypes.find(modelType));
+        if (modelsIt == m_modelTypes.cend())
+            return nullptr;
+        auto const & models = *modelsIt->second;
+        auto const modelIt(models.find(modelName));
+        return (modelIt != models.cend()) ? modelIt->second.get() : nullptr;
     }
 
 private: /* Fields: */
