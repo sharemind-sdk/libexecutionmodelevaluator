@@ -104,8 +104,7 @@ ExecutionModelEvaluator::ExecutionModelEvaluator(
                     modelSectionName.size() - 5u)
             {
                 // Check for model constants
-                typedef std::map<std::string, double> ConstantMap;
-                ConstantMap constants;
+                std::map<std::string, double> constants;
 
                 std::ostringstream oss;
                 oss << modelSectionName << "Constant";
@@ -116,15 +115,9 @@ ExecutionModelEvaluator::ExecutionModelEvaluator(
 
                 if (constSection) {
                     for (const ptree::value_type & constVal : *constSection) {
-                        #if ! SHAREMIND_GCCPR44436
-                        if (!constants.emplace(constVal.first,
-                                    constVal.second.get_value<double>()).second)
-                        #else
-                        if (!constants.insert(ConstantMap::value_type(
-                                        constVal.first,
-                                        constVal.second.get_value<double>()))
-                                    .second)
-                        #endif
+                        if (!constants.emplace(
+                                constVal.first,
+                                constVal.second.get_value<double>()).second)
                         {
                             logger.error() << "Duplicate model constants" <<
                                 " in '" << constSectionName << "'.";
