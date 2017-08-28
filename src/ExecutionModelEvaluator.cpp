@@ -22,7 +22,6 @@
 #include <boost/property_tree/ini_parser.hpp>
 #include <boost/property_tree/ptree.hpp>
 #include <exprtk.hpp>
-#include <LogHard/Logger.h>
 #include <sharemind/MakeUnique.h>
 #include <sstream>
 

@@ -21,12 +21,11 @@
 #define MOD_SHARED3P_EMU_EXECUTIONMODELEVALUATOR_H
 
 #include <limits>
+#include <LogHard/Logger.h>
 #include <map>
 #include <memory>
 #include <sharemind/Exception.h>
 
-
-namespace LogHard { class Logger; }
 
 namespace sharemind {
 
