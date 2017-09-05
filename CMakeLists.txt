@@ -75,18 +75,17 @@ SharemindAddSharedLibrary("libexecutionmodelevaluator"
 )
 
 # Install CMake files:
-SharemindNewUniqueList(SharemindLibExecutionModelEvaluator_INSTALL_LINK_LIBRARIES
-    ${SharemindLibExecutionModelEvaluator_LINK_LIBRARIES}
-    "-L${CMAKE_INSTALL_PREFIX}/lib" "-lsharemind_executionmodelevaluator"
+SharemindCreateCMakeFindFiles(
+    INCLUDE_DIRS
+        "${CMAKE_INSTALL_PREFIX}/include"
+        ${SharemindLibExecutionModelEvaluator_INCLUDE_DIRS}
+    DEFINITIONS
+        ${SharemindLibExecutionModelEvaluator_DEFINITIONS}
+    LIBRARIES
+        ${SharemindLibExecutionModelEvaluator_LINK_LIBRARIES}
+        "-L${CMAKE_INSTALL_PREFIX}/lib"
+        "-lsharemind_executionmodelevaluator"
 )
-SharemindNewUniqueList(SharemindLibExecutionModelEvaluator_INSTALL_INCLUDE_DIRS
-    "${CMAKE_INSTALL_PREFIX}/include"
-    ${SharemindLibExecutionModelEvaluator_INCLUDE_DIRS}
-)
-SharemindNewUniqueList(SharemindLibExecutionModelEvaluator_INSTALL_DEFINITIONS
-    ${SharemindLibExecutionModelEvaluator_DEFINITIONS}
-)
-SharemindUseCMakeFindFiles()
 
 
 # Packaging:
