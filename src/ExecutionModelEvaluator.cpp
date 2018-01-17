@@ -90,6 +90,30 @@ SHAREMIND_DEFINE_EXCEPTION_CONST_MSG_NOINLINE(
         ConfigurationException,
         "Error in profiler model loader configuration!");
 
+SHAREMIND_DEFINE_EXCEPTION_NOINLINE(std::exception,
+                                    ExecutionModelEvaluator::Model::,
+                                    Exception);
+SHAREMIND_DEFINE_EXCEPTION_CONST_MSG_NOINLINE(
+        Exception,
+        ExecutionModelEvaluator::Model::,
+        LossOfPrecisionException,
+        "Cannot cast input value without loss of precision!");
+SHAREMIND_DEFINE_EXCEPTION_CONST_MSG_NOINLINE(
+        Exception,
+        ExecutionModelEvaluator::Model::,
+        ExpressionCompileException,
+        "Failed to compile expression!");
+
+ExecutionModelEvaluator::Model::Model() noexcept = default;
+ExecutionModelEvaluator::Model::Model(Model &&) noexcept = default;
+ExecutionModelEvaluator::Model::Model(Model const &) noexcept = default;
+ExecutionModelEvaluator::Model::~Model() noexcept = default;
+
+ExecutionModelEvaluator::Model & ExecutionModelEvaluator::Model::operator=(
+        Model &&) noexcept = default;
+ExecutionModelEvaluator::Model & ExecutionModelEvaluator::Model::operator=(
+        Model const &) noexcept = default;
+
 ExecutionModelEvaluator::ExecutionModelEvaluator(
         const LogHard::Logger & logger,
         const std::string & configFilename)

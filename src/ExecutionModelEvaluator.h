@@ -42,19 +42,24 @@ public: /* Types: */
 
     public: /* Types: */
 
-        SHAREMIND_DEFINE_EXCEPTION(std::exception, Exception);
-        SHAREMIND_DEFINE_EXCEPTION_CONST_MSG(
+        SHAREMIND_DECLARE_EXCEPTION_NOINLINE(std::exception, Exception);
+        SHAREMIND_DECLARE_EXCEPTION_CONST_MSG_NOINLINE(
                 Exception,
-                LossOfPrecisionException,
-                "Cannot cast input value without loss of precision!");
-        SHAREMIND_DEFINE_EXCEPTION_CONST_MSG(
+                LossOfPrecisionException);
+        SHAREMIND_DECLARE_EXCEPTION_CONST_MSG_NOINLINE(
                 Exception,
-                ExpressionCompileException,
-                "Failed to compile expression!");
+                ExpressionCompileException);
 
     public: /* Methods: */
 
-        inline virtual ~Model() noexcept {}
+        Model() noexcept;
+        Model(Model &&) noexcept;
+        Model(Model const &) noexcept;
+        virtual ~Model() noexcept;
+
+        Model & operator=(Model &&) noexcept;
+        Model & operator=(Model const &) noexcept;
+
         virtual double evaluate(size_t inputSize) const = 0;
 
     }; /* class Model { */
