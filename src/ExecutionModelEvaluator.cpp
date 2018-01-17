@@ -28,14 +28,14 @@
 
 namespace {
 
-class ExprTkModel: public sharemind::ExecutionModelEvaluator::Model {
+class ExprTkModel final: public sharemind::ExecutionModelEvaluator::Model {
 
 public: /* Methods: */
 
-    inline ExprTkModel(exprtk::parser<double> & parser,
-                 const std::string & model,
-                 const std::string & inputSizeVariable,
-                 const std::map<std::string, double> & constants)
+    ExprTkModel(exprtk::parser<double> & parser,
+                std::string const & model,
+                std::string const & inputSizeVariable,
+                std::map<std::string, double> const & constants)
     {
         m_symbolTable.add_variable(inputSizeVariable, m_inputSize);
 
@@ -48,17 +48,19 @@ public: /* Methods: */
             throw ExpressionCompileException();
     }
 
-    inline ~ExprTkModel() noexcept {}
+    ~ExprTkModel() noexcept final override {}
 
-    inline double evaluate(size_t inputSize) const final override {
-        static_assert(std::numeric_limits<double>::radix == 2, "Expected double type radix to be 2.");
+    double evaluate(size_t inputSize) const final override {
+        static_assert(std::numeric_limits<double>::radix == 2,
+                      "Expected double type radix to be 2.");
         static_assert(std::numeric_limits<double>::digits >= 0, "");
         constexpr std::size_t max =
             sizeof(size_t) >= (std::numeric_limits<double>::digits % 8u == 0
                               ? std::numeric_limits<double>::digits / 8u
                               : std::numeric_limits<double>::digits / 8u + 1u)
             // pow(radix, digits-1) - 1
-            ? (static_cast<size_t>(1) << std::numeric_limits<double>::digits) - 1u
+            ? (static_cast<size_t>(1) << std::numeric_limits<double>::digits)
+              - 1u
             : std::numeric_limits<size_t>::max();
 
         if (inputSize > max)
