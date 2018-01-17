@@ -211,4 +211,16 @@ ExecutionModelEvaluator::ExecutionModelEvaluator(
     }
 }
 
+ExecutionModelEvaluator::Model * ExecutionModelEvaluator::model(
+        std::string const & modelType,
+        std::string const & modelName) const
+{
+    auto const modelsIt(m_modelTypes.find(modelType));
+    if (modelsIt == m_modelTypes.cend())
+        return nullptr;
+    auto const & models = *modelsIt->second;
+    auto const modelIt(models.find(modelName));
+    return (modelIt != models.cend()) ? modelIt->second.get() : nullptr;
+}
+
 } /* namespace sharemind { */
