@@ -71,8 +71,8 @@ private: /* Types: */
 
 public: /* Methods: */
 
-    ExecutionModelEvaluator(const LogHard::Logger & logger,
-                            const std::string & configFilename);
+    ExecutionModelEvaluator(LogHard::Logger const & logger,
+                            std::string const & configFilename);
 
     Model * model(std::string const & modelType,
                   std::string const & modelName) const;

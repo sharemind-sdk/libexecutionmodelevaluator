@@ -22,8 +22,8 @@
 #include <boost/property_tree/ini_parser.hpp>
 #include <boost/property_tree/ptree.hpp>
 #include <exprtk.hpp>
+#include <sharemind/Concat.h>
 #include <sharemind/MakeUnique.h>
-#include <sstream>
 
 
 namespace {
@@ -39,7 +39,7 @@ public: /* Methods: */
     {
         m_symbolTable.add_variable(inputSizeVariable, m_inputSize);
 
-        for (const auto & pair : constants)
+        for (auto const & pair : constants)
             m_symbolTable.add_constant(pair.first, pair.second);
 
         m_expression.register_symbol_table(m_symbolTable);
@@ -117,8 +117,8 @@ ExecutionModelEvaluator::Model & ExecutionModelEvaluator::Model::operator=(
         Model const &) noexcept = default;
 
 ExecutionModelEvaluator::ExecutionModelEvaluator(
-        const LogHard::Logger & logger,
-        const std::string & configFilename)
+        LogHard::Logger const & logger,
+        std::string const & configFilename)
 {
     using boost::property_tree::ptree;
     ptree config;
@@ -128,33 +128,30 @@ ExecutionModelEvaluator::ExecutionModelEvaluator(
     try {
         boost::property_tree::read_ini(configFilename, config);
 
-        const ptree & baseVariables = config.get_child("BaseVariable");
-        const std::string inputSizeVarName = baseVariables.get<std::string>("InputSize");
+        ptree const & baseVariables = config.get_child("BaseVariable");
+        auto const inputSizeVarName(
+                    baseVariables.get<std::string>("InputSize"));
 
-        for (const ptree::value_type & modelSection : config) {
-            const std::string & modelSectionName(modelSection.first);
+        for (auto const & modelSection : config) {
+            auto const & modelSectionName = modelSection.first;
 
-            if (modelSectionName.rfind("Model") ==
-                    modelSectionName.size() - 5u)
+            if (modelSectionName.rfind("Model") == modelSectionName.size() - 5u)
             {
                 // Check for model constants
                 std::map<std::string, double> constants;
 
-                std::ostringstream oss;
-                oss << modelSectionName << "Constant";
-                const std::string constSectionName(oss.str());
-
-                boost::optional<ptree &> constSection =
-                    config.get_child_optional(constSectionName);
-
-                if (constSection) {
-                    for (const ptree::value_type & constVal : *constSection) {
+                auto const constSectionName(concat(modelSectionName,
+                                                   "Constant"));
+                if (auto const constSection =
+                            config.get_child_optional(constSectionName))
+                {
+                    for (auto const & constVal : *constSection) {
                         if (!constants.emplace(
                                 constVal.first,
                                 constVal.second.get_value<double>()).second)
                         {
-                            logger.error() << "Duplicate model constants" <<
-                                " in '" << constSectionName << "'.";
+                            logger.error() << "Duplicate model constants in '"
+                                           << constSectionName << "'.";
                             throw ConfigurationException();
                         }
                     }
@@ -163,10 +160,10 @@ ExecutionModelEvaluator::ExecutionModelEvaluator(
                 // Parse all the model expressions for this section
                 auto models(makeUnique<ModelMap>());
 
-                for (const ptree::value_type & model : modelSection.second) {
-                    const std::string & modelName(model.first);
-                    const std::string modelExpression = model.second.get_value<std::string>();
-
+                for (auto const & model : modelSection.second) {
+                    auto const & modelName = model.first;
+                    auto const modelExpression(
+                                model.second.get_value<std::string>());
                     try {
                         auto model(makeUnique<ExprTkModel>(parser,
                                                            modelExpression,
@@ -175,13 +172,16 @@ ExecutionModelEvaluator::ExecutionModelEvaluator(
                         if (!models->emplace(modelName,
                                              std::move(model)).second)
                         {
-                            logger.error() << "Duplicate model expression" <<
-                                " definitions for '" << modelName << "'.";
+                            logger.error() << "Duplicate model expression "
+                                              "definitions for '" << modelName
+                                           << "'.";
                             throw ConfigurationException();
                         }
-                    } catch (const Model::ExpressionCompileException &) {
-                        logger.error() << "Invalid model expression '" << modelName
-                            << "' = '" << modelExpression << "': " << parser.error();
+                    } catch (Model::ExpressionCompileException const &) {
+                        logger.error() << "Invalid model expression '"
+                                       << modelName << "' = '"
+                                       << modelExpression << "': "
+                                       << parser.error();
                         throw ConfigurationException();
                     }
                 }
@@ -189,24 +189,24 @@ ExecutionModelEvaluator::ExecutionModelEvaluator(
                 if (!m_modelTypes.emplace(modelSectionName,
                                           std::move(models)).second)
                 {
-                    logger.error() << "Duplicate model type sections" <<
-                        " for '" << modelSectionName << "'.";
+                    logger.error() << "Duplicate model type sections for '"
+                                   << modelSectionName << "'.";
                     throw ConfigurationException();
                 }
             }
         }
-    } catch (const boost::property_tree::ini_parser_error & e) {
+    } catch (boost::property_tree::ini_parser_error const & e) {
         logger.error() << "Error while parsing configuration file. "
-            << e.message() << " [" << e.filename() << ":"
-            << e.line() << "].";
+                       << e.message() << " [" << e.filename() << ':' << e.line()
+                       << "].";
         throw ConfigurationException();
-    } catch (const boost::property_tree::ptree_bad_data & e) {
+    } catch (boost::property_tree::ptree_bad_data const & e) {
         logger.error() << "Error while parsing configuration file. Bad data: "
-            << e.what();
+                       << e.what();
         throw ConfigurationException();
-    } catch (const boost::property_tree::ptree_bad_path & e) {
+    } catch (boost::property_tree::ptree_bad_path const & e) {
         logger.error() << "Error while parsing configuration file. Bad path: "
-            << e.what();
+                       << e.what();
         throw ConfigurationException();
     }
 }
