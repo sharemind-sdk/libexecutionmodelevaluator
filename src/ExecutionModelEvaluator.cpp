@@ -81,6 +81,15 @@ private: /* Fields: */
 
 namespace sharemind {
 
+SHAREMIND_DEFINE_EXCEPTION_NOINLINE(std::exception,
+                                    ExecutionModelEvaluator::,
+                                    Exception);
+SHAREMIND_DEFINE_EXCEPTION_CONST_MSG_NOINLINE(
+        Exception,
+        ExecutionModelEvaluator::,
+        ConfigurationException,
+        "Error in profiler model loader configuration!");
+
 ExecutionModelEvaluator::ExecutionModelEvaluator(
         const LogHard::Logger & logger,
         const std::string & configFilename)
