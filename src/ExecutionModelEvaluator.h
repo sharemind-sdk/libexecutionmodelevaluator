@@ -34,7 +34,7 @@ class ExecutionModelEvaluator {
 
 public: /* Types: */
 
-    SHAREMIND_DECLARE_EXCEPTION_NOINLINE(std::exception, Exception);
+    SHAREMIND_DECLARE_EXCEPTION_NOINLINE(sharemind::Exception, Exception);
     SHAREMIND_DECLARE_EXCEPTION_CONST_MSG_NOINLINE(Exception,
                                                    ConfigurationException);
 
@@ -42,7 +42,7 @@ public: /* Types: */
 
     public: /* Types: */
 
-        SHAREMIND_DECLARE_EXCEPTION_NOINLINE(std::exception, Exception);
+        SHAREMIND_DECLARE_EXCEPTION_NOINLINE(sharemind::Exception, Exception);
         SHAREMIND_DECLARE_EXCEPTION_CONST_MSG_NOINLINE(
                 Exception,
                 LossOfPrecisionException);
