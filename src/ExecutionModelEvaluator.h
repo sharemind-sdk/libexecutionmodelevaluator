@@ -25,6 +25,7 @@
 #include <map>
 #include <memory>
 #include <sharemind/Exception.h>
+#include <sharemind/ExceptionMacros.h>
 
 
 namespace sharemind {
