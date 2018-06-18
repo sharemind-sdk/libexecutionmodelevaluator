@@ -103,7 +103,7 @@ SharemindAddComponentPackage("dev"
     DESCRIPTION "Sharemind Execution Model Evaluator library development headers"
     DEB_SECTION "libdevel"
     DEB_DEPENDS
-        "libsharemind-executionmodelevaluator (= ${SharemindLibExecutionModelEvaluator_VERSION})"
+        "libsharemind-executionmodelevaluator (= ${SharemindLibExecutionModelEvaluator_DEB_lib_PACKAGE_VERSION})"
         "libloghard-dev (>= 0.1.0)"
         "libsharemind-cxxheaders-dev (>= 0.1.0)"
         "libstdc++-dev"
@@ -113,5 +113,5 @@ SharemindAddComponentPackage("debug"
     DESCRIPTION "Sharemind Execution Model Evaluator debug symbols"
     DEB_SECTION "debug"
     DEB_DEPENDS
-        "libsharemind-executionmodelevaluator (= ${SharemindLibExecutionModelEvaluator_VERSION})")
+        "libsharemind-executionmodelevaluator (= ${SharemindLibExecutionModelEvaluator_DEB_lib_PACKAGE_VERSION})")
 SharemindPackagingFinalize()
