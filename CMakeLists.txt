@@ -30,7 +30,7 @@ SharemindSetProjectVersion()
 SET(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/CMakeIncludes/"
                       ${CMAKE_MODULE_PATH})
 FIND_PACKAGE(ExprTk REQUIRED)
-FIND_PACKAGE(LogHard REQUIRED)
+FIND_PACKAGE(LogHard 0.3.0 REQUIRED)
 FIND_PACKAGE(SharemindCxxHeaders 0.4.0 REQUIRED)
 
 # Headers:
@@ -95,7 +95,7 @@ SharemindAddComponentPackage("lib"
     DESCRIPTION "Sharemind Execution Model Evaluator library"
     DEB_SECTION "libs"
     DEB_DEPENDS
-        "libloghard (>= 0.1.0)"
+        "libloghard (>= 0.3.0)"
         "libstdc++6 (>= 4.8.0)"
 )
 SharemindAddComponentPackage("dev"
@@ -104,7 +104,7 @@ SharemindAddComponentPackage("dev"
     DEB_SECTION "libdevel"
     DEB_DEPENDS
         "libsharemind-executionmodelevaluator (= ${SharemindLibExecutionModelEvaluator_DEB_lib_PACKAGE_VERSION})"
-        "libloghard-dev (>= 0.1.0)"
+        "libloghard-dev (>= 0.3.0)"
         "libsharemind-cxxheaders-dev (>= 0.4.0)"
         "libstdc++-dev"
 )
