@@ -23,7 +23,6 @@
 #include <boost/property_tree/ptree.hpp>
 #include <exprtk.hpp>
 #include <sharemind/Concat.h>
-#include <sharemind/MakeUnique.h>
 
 
 namespace {
@@ -158,17 +157,18 @@ ExecutionModelEvaluator::ExecutionModelEvaluator(
                 }
 
                 // Parse all the model expressions for this section
-                auto models(makeUnique<ModelMap>());
+                auto models(std::make_unique<ModelMap>());
 
                 for (auto const & model : modelSection.second) {
                     auto const & modelName = model.first;
                     auto const modelExpression(
                                 model.second.get_value<std::string>());
                     try {
-                        auto model(makeUnique<ExprTkModel>(parser,
-                                                           modelExpression,
-                                                           inputSizeVarName,
-                                                           constants));
+                        auto model(std::make_unique<ExprTkModel>(
+                                           parser,
+                                           modelExpression,
+                                           inputSizeVarName,
+                                           constants));
                         if (!models->emplace(modelName,
                                              std::move(model)).second)
                         {
