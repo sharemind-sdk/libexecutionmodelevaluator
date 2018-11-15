@@ -53,7 +53,7 @@ SharemindNewUniqueList(SharemindLibExecutionModelEvaluator_DEFINITIONS
 )
 FILE(GLOB_RECURSE SharemindLibExecutionModelEvaluator_SOURCES
      "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
-SharemindSetCxx11CompileOptions()
+SharemindSetCxx14CompileOptions()
 SharemindAddSharedLibrary("libexecutionmodelevaluator"
     OUTPUT_NAME "sharemind_executionmodelevaluator"
     SOURCES
