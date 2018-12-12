@@ -23,13 +23,13 @@ PROJECT(SharemindLibExecutionModelEvaluator VERSION 0.2.2 LANGUAGES CXX)
 INCLUDE("${CMAKE_CURRENT_SOURCE_DIR}/config.local" OPTIONAL)
 INCLUDE("${CMAKE_CURRENT_BINARY_DIR}/config.local" OPTIONAL)
 
-FIND_PACKAGE(SharemindCMakeHelpers 1.3 REQUIRED)
+FIND_PACKAGE(SharemindCMakeHelpers 1.4 REQUIRED)
 
 SET(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/CMakeIncludes/"
                       ${CMAKE_MODULE_PATH})
 FIND_PACKAGE(ExprTk REQUIRED)
 FIND_PACKAGE(LogHard 0.3.0 REQUIRED)
-FIND_PACKAGE(SharemindCxxHeaders 0.4.0 REQUIRED)
+FIND_PACKAGE(SharemindCxxHeaders 0.5.0 REQUIRED)
 
 # Headers:
 FILE(GLOB_RECURSE SharemindLibExecutionModelEvaluator_HEADERS
@@ -103,7 +103,7 @@ SharemindAddComponentPackage("dev"
     DEB_DEPENDS
         "libsharemind-executionmodelevaluator (= ${SharemindLibExecutionModelEvaluator_DEB_lib_PACKAGE_VERSION})"
         "libloghard-dev (>= 0.3.0)"
-        "libsharemind-cxxheaders-dev (>= 0.4.0)"
+        "libsharemind-cxxheaders-dev (>= 0.5.0)"
         "libstdc++-dev"
 )
 SharemindAddComponentPackage("debug"
