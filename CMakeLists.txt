@@ -23,67 +23,53 @@ PROJECT(SharemindLibExecutionModelEvaluator VERSION 0.2.3 LANGUAGES CXX)
 INCLUDE("${CMAKE_CURRENT_SOURCE_DIR}/config.local" OPTIONAL)
 INCLUDE("${CMAKE_CURRENT_BINARY_DIR}/config.local" OPTIONAL)
 
-FIND_PACKAGE(SharemindCMakeHelpers 1.4 REQUIRED)
+FIND_PACKAGE(SharemindCMakeHelpers 1.6 REQUIRED)
 
 SET(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/CMakeIncludes/"
                       ${CMAKE_MODULE_PATH})
 FIND_PACKAGE(ExprTk REQUIRED)
-FIND_PACKAGE(LogHard 0.3.0 REQUIRED)
-FIND_PACKAGE(SharemindCxxHeaders 0.5.0 REQUIRED)
+FIND_PACKAGE(LogHard 0.5.0 REQUIRED)
+FIND_PACKAGE(SharemindCxxHeaders 0.8.0 REQUIRED)
 
-# Headers:
+
+# LibExecutionModelEvaluator:
 FILE(GLOB_RECURSE SharemindLibExecutionModelEvaluator_HEADERS
      "${CMAKE_CURRENT_SOURCE_DIR}/src/*.h")
 INSTALL(FILES ${SharemindLibExecutionModelEvaluator_HEADERS}
         DESTINATION "include/sharemind"
         COMPONENT "dev")
-
-# The library:
-SharemindNewUniqueList(SharemindLibExecutionModelEvaluator_LINK_LIBRARIES
-    ${LogHard_LIBRARIES}
-    ${SharemindCxxHeaders_LIBRARIES}
-)
-SharemindNewUniqueList(SharemindLibExecutionModelEvaluator_INCLUDE_DIRS
-    ${LogHard_INCLUDE_DIRS}
-    ${SharemindCxxHeaders_INCLUDE_DIRS}
-)
-SharemindNewUniqueList(SharemindLibExecutionModelEvaluator_DEFINITIONS
-    ${LogHard_DEFINITIONS}
-    ${SharemindCxxHeaders_DEFINITIONS}
-)
 FILE(GLOB_RECURSE SharemindLibExecutionModelEvaluator_SOURCES
      "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
 SharemindSetCxx14CompileOptions()
-SharemindAddSharedLibrary("libexecutionmodelevaluator"
+SharemindAddSharedLibrary(LibExecutionModelEvaluator
     OUTPUT_NAME "sharemind_executionmodelevaluator"
     SOURCES
         ${SharemindLibExecutionModelEvaluator_SOURCES}
         ${SharemindLibExecutionModelEvaluator_HEADERS}
-    INCLUDE_DIRECTORIES
-        ${SharemindLibExecutionModelEvaluator_INCLUDE_DIRS}
-        ${ExprTk_INCLUDE_DIRS}
-    LEGACY_DEFINITIONS
-        ${SharemindLibExecutionModelEvaluator_DEFINITIONS}
-    COMPILE_DEFINITIONS
+)
+TARGET_COMPILE_DEFINITIONS(LibExecutionModelEvaluator
+    PRIVATE
         "exprtk_disable_comments"
         "exprtk_disable_break_continue"
         "exprtk_disable_enhanced_features"
-    LINK_LIBRARIES
-        ${SharemindLibExecutionModelEvaluator_LINK_LIBRARIES}
-)
-
-# Install CMake files:
-SharemindCreateCMakeFindFiles(
-    INCLUDE_DIRS
-        "${CMAKE_INSTALL_PREFIX}/include"
-        ${SharemindLibExecutionModelEvaluator_INCLUDE_DIRS}
-    DEFINITIONS
-        ${SharemindLibExecutionModelEvaluator_DEFINITIONS}
-    LIBRARIES
-        ${SharemindLibExecutionModelEvaluator_LINK_LIBRARIES}
-        "-L${CMAKE_INSTALL_PREFIX}/lib"
-        "-lsharemind_executionmodelevaluator"
-)
+    )
+TARGET_INCLUDE_DIRECTORIES(LibExecutionModelEvaluator
+    PRIVATE
+        ${ExprTk_INCLUDE_DIRS}
+    INTERFACE
+        # $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src> # TODO
+        $<INSTALL_INTERFACE:${CMAKE_INSTALL_PREFIX}/include>
+    )
+TARGET_LINK_LIBRARIES(LibExecutionModelEvaluator
+    PUBLIC
+        LogHard::LogHard
+        Sharemind::CxxHeaders
+    )
+SharemindCreateCMakeFindFilesForTarget(LibExecutionModelEvaluator
+    DEPENDENCIES
+        "LogHard 0.5.0"
+        "SharemindCxxHeaders 0.8.0"
+    )
 
 
 # Packaging:
@@ -93,7 +79,7 @@ SharemindAddComponentPackage("lib"
     DESCRIPTION "Sharemind Execution Model Evaluator library"
     DEB_SECTION "libs"
     DEB_DEPENDS
-        "libloghard (>= 0.3.0)"
+        "libloghard (>= 0.5.0)"
         "libstdc++6 (>= 4.8.0)"
 )
 SharemindAddComponentPackage("dev"
@@ -102,8 +88,8 @@ SharemindAddComponentPackage("dev"
     DEB_SECTION "libdevel"
     DEB_DEPENDS
         "libsharemind-executionmodelevaluator (= ${SharemindLibExecutionModelEvaluator_DEB_lib_PACKAGE_VERSION})"
-        "libloghard-dev (>= 0.3.0)"
-        "libsharemind-cxxheaders-dev (>= 0.5.0)"
+        "libloghard-dev (>= 0.4.0)"
+        "libsharemind-cxxheaders-dev (>= 0.8.0)"
         "libstdc++-dev"
 )
 SharemindAddComponentPackage("debug"
