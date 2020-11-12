@@ -40,7 +40,6 @@ INSTALL(FILES ${SharemindLibExecutionModelEvaluator_HEADERS}
         COMPONENT "dev")
 FILE(GLOB_RECURSE SharemindLibExecutionModelEvaluator_SOURCES
      "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
-SharemindSetCxx14CompileOptions()
 SharemindAddSharedLibrary(LibExecutionModelEvaluator
     OUTPUT_NAME "sharemind_executionmodelevaluator"
     SOURCES
