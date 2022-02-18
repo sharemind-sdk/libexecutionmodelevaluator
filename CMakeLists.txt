@@ -28,7 +28,7 @@ FIND_PACKAGE(SharemindCMakeHelpers 1.6 REQUIRED)
 SET(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/CMakeIncludes/"
                       ${CMAKE_MODULE_PATH})
 FIND_PACKAGE(ExprTk REQUIRED)
-FIND_PACKAGE(LogHard 0.5.0 REQUIRED)
+FIND_PACKAGE(LogHard 0.6.0 REQUIRED)
 FIND_PACKAGE(SharemindCxxHeaders 0.9.0 REQUIRED)
 
 
@@ -66,7 +66,7 @@ TARGET_LINK_LIBRARIES(LibExecutionModelEvaluator
     )
 SharemindCreateCMakeFindFilesForTarget(LibExecutionModelEvaluator
     DEPENDENCIES
-        "LogHard 0.5.0"
+        "LogHard 0.6.0"
         "SharemindCxxHeaders 0.9.0"
     )
 
