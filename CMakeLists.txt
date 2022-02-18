@@ -29,7 +29,7 @@ SET(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/CMakeIncludes/"
                       ${CMAKE_MODULE_PATH})
 FIND_PACKAGE(ExprTk REQUIRED)
 FIND_PACKAGE(LogHard 0.5.0 REQUIRED)
-FIND_PACKAGE(SharemindCxxHeaders 0.8.0 REQUIRED)
+FIND_PACKAGE(SharemindCxxHeaders 0.9.0 REQUIRED)
 
 
 # LibExecutionModelEvaluator:
