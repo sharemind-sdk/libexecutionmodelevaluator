@@ -67,7 +67,7 @@ TARGET_LINK_LIBRARIES(LibExecutionModelEvaluator
 SharemindCreateCMakeFindFilesForTarget(LibExecutionModelEvaluator
     DEPENDENCIES
         "LogHard 0.5.0"
-        "SharemindCxxHeaders 0.8.0"
+        "SharemindCxxHeaders 0.9.0"
     )
 
 
@@ -88,7 +88,7 @@ SharemindAddComponentPackage("dev"
     DEB_DEPENDS
         "libsharemind-executionmodelevaluator (= ${SharemindLibExecutionModelEvaluator_DEB_lib_PACKAGE_VERSION})"
         "libloghard-dev (>= 0.4.0)"
-        "libsharemind-cxxheaders-dev (>= 0.8.0)"
+        "libsharemind-cxxheaders-dev (>= 0.9.0)"
         "libstdc++-dev"
 )
 SharemindAddComponentPackage("debug"
